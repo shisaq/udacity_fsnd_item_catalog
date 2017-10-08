@@ -4,17 +4,6 @@ app = Flask(__name__)
 from database_orm import session, desc
 from database_setup import Category, Item
 
-# fake database
-category = {'name': 'haha1', 'id': '1'}
-categories = [
-    {'name': 'haha1', 'id': '1'},
-    {'name': 'haha2', 'id': '2'}
-]
-item = {'name': 'item1', 'description': 'wowowowowowowo1', 'course': 'haha1', 'id': '1'}
-items = [
-    {'name': 'item1', 'description': 'wowowowowowowo1', 'course': 'haha1', 'id': '1'},
-    {'name': 'item2', 'description': 'wowowowowowowo2', 'course': 'haha2', 'id': '2'}
-]
 
 @app.route('/')
 @app.route('/catalog')
@@ -63,7 +52,7 @@ def editItem(item_name):
             itemToBeUpdate.course = request.form['course']
             session.add(itemToBeUpdate)
             session.commit()
-            return redirect(url_for('itemsList', category_name = request.form['course']))
+            return redirect(url_for('itemsList', category_name = itemToBeUpdate.course))
     else:
         categories = session.query(Category).all()
         return render_template('editItem.html', categories = categories, item = itemToBeUpdate)
