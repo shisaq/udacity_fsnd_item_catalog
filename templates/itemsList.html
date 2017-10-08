@@ -1,5 +1,14 @@
 {% include 'header.html' %}
 
+<!-- operation alert -->
+{% with messages = get_flashed_messages() %}
+    {% if messages %}
+        {% for message in messages %}
+        <p class="message">{{ message }}</p>
+        {% endfor %}
+    {% endif %}
+{% endwith %}
+
 <!-- main content -->
 <ul class="categories">
 {% for c in categories %}

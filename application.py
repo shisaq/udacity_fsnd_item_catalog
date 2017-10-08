@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, url_for, redirect
+from flask import Flask, render_template, request, url_for, redirect, flash
 app = Flask(__name__)
 
 from database_orm import session, desc
@@ -36,7 +36,11 @@ def addItem():
                            course = request.form['course'])
             session.add(newItem)
             session.commit()
+            flash('A new item has been %s added!' % newItem.name)
             return redirect(url_for('itemsList', category_name = request.form['course']))
+        else:
+            flash('Please make sure there is no empty value.')
+            return redirect(url_for('homepage'))
     else:
         categories = session.query(Category).all()
         return render_template('addItem.html', categories = categories)
@@ -52,7 +56,10 @@ def editItem(item_name):
             itemToBeUpdate.course = request.form['course']
             session.add(itemToBeUpdate)
             session.commit()
-            return redirect(url_for('itemsList', category_name = itemToBeUpdate.course))
+            flash('Successfully updated the info of %s!' % itemToBeUpdate.name)
+        else:
+            flash('Please make sure there is no empty value.')
+        return redirect(url_for('itemsList', category_name = itemToBeUpdate.course))
     else:
         categories = session.query(Category).all()
         return render_template('editItem.html', categories = categories, item = itemToBeUpdate)
@@ -64,11 +71,13 @@ def deleteItem(item_name):
     if request.method == 'POST':
         session.delete(itemToBeDelete)
         session.commit()
+        flash('Item %s deleted.' % itemToBeDelete.name)
         return redirect(url_for('itemsList', category_name = itemToBeDelete.course))
     else:
         return render_template('deleteItem.html', item = itemToBeDelete)
 
 
 if __name__ == '__main__':
+    app.secret_key = 'superdevkey'
     app.debug = True
     app.run(host = '0.0.0.0', port = 8000)
