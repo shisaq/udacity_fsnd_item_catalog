@@ -1,0 +1,21 @@
+{% include 'header.html' %}
+
+<!-- main content -->
+<ul class="categories">
+{% for c in categories %}
+    <li class="{{ 'highlight basic' if c.name == category.name else 'basic' }}"><a href="{{ url_for('itemsList', category_name = c.name) }}">{{ c.name }}</a></li>
+{% endfor %}
+</ul>
+<div class="items_block">
+    <div class="add">
+        <a href="{{ url_for('addItem') }}">add</a>
+    </div>
+    <h2>{{ category.name }}(2 items)</h2>
+    <ul class="items">
+    {% for item in items %}
+        <li><a href="{{ url_for('showItem', category_name = item.course, item_name = item.name) }}">{{ item.name }}</a></li>
+    {% endfor %}
+    </ul>
+</div>
+
+{% include 'footer.html' %}

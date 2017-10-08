@@ -1,0 +1,10 @@
+{% include 'header.html' %}
+
+<h2>Delete Item</h2>
+<p>Are you sure you want to delete {{ item.name }}?</p>
+<form method="post" action="{{ url_for('itemsList', category_name = item.course ) }}">
+    <input type="submit" value="Submit">
+    <a href="{{ url_for('itemsList', category_name = item.course ) }}">Cancel</a>
+</form>
+
+{% include 'footer.html' %}

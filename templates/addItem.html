@@ -1,0 +1,29 @@
+{% include 'header.html' %}
+
+<h2>Add a New Item</h2>
+<form method="post" action="{{ url_for('addItem') }}">
+    <p>
+        <h3>Title</h3>
+        <input type="text" name="name">
+    </p>
+    <p>
+        <h3>Description</h3>
+        <textarea name="description"></textarea>
+    </p>
+    <p>
+        <h3>Category</h3>
+        <select name="course">
+        {% for c in categories %}
+            <option value="{{ c.name }}">
+                {{ c.name }}
+            </option>
+        {% endfor %}
+        </select>
+    </p>
+    <p>
+        <input type="button" value="Submit">
+        <a href="{{ url_for('homepage') }}">Cancel</a>
+    </p>
+</form>
+
+{% include 'footer.html' %}
