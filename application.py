@@ -16,8 +16,13 @@ import json
 from flask import make_response
 import requests
 
-G_CLIENT_ID = json.loads(
-  open('client_secrets/g_client_secrets.json', 'r').read())['web']['client_id']
+# oauth ids and secrets
+G_CLIENT_ID = json.loads(open(
+    'client_secrets/g_client_secrets.json', 'r').read())['web']['client_id']
+FB_CLIENT_ID = json.loads(open(
+    'client_secrets/fb_client_secrets.json', 'r').read())['web']['app_id']
+FB_CLIENT_SECRET = json.loads(open(
+    'client_secrets/fb_client_secrets.json', 'r').read())['web']['app_secret']
 
 # log in page
 @app.route('/login')
@@ -114,27 +119,71 @@ def gconnect():
     flash("You've logged in as %s" % login_session['username'])
     return output
 
-# Disconnect Google oauth2
-@app.route('/gdisconnect')
-def gdisconnect():
-    access_token = login_session.get('access_token')
-    if access_token is None:
-        print 'Access Token is None'
+# Facebook Oauth2
+@app.route('/fbconnect', methods=['POST'])
+def fbconnect():
+    # Validate state token
+    if request.args.get('state') != login_session['state']:
         response = make_response(json.dumps(\
-            'Current user not connected.'), 401)
+            'Invalid state parameter.'), 401)
         response.headers['Content-Type'] = 'application/json'
         return response
+    access_token = request.data
+
+    # Exchange token to be long-lived server-side token
+    url = 'https://graph.facebook.com/oauth/access_token?grant_type=fb_exchange_token&client_id=%s&client_secret=%s&fb_exchange_token=%s' % (FB_CLIENT_ID, FB_CLIENT_SECRET, access_token)
+    h = httplib2.Http()
+    result = h.request(url, 'GET')[1]
+
+    # Use token to get user info from API
+    userinfo_url = 'https://graph.facebook.com/v2.10/me'
+    # Strip expire tag from access token
+    token = result.split(',')[0].split(':')[1].replace('"', '')
+
+    url = 'https://graph.facebook.com/v2.10/me?access_token=%s&fields=name,id,email' % token
+    h = httplib2.Http()
+    result = h.request(url, 'GET')[1]
+
+    data = json.loads(result)
+    login_session['provider'] = 'facebook'
+    login_session['username'] = data['name']
+    login_session['email'] = data['email']
+    login_session['facebook_id'] = data['id']
+
+    # Get user picture
+    url = 'https://graph.facebook.com/v2.10/me/picture?access_token=%s&redirect=0&height=200&width=200' % token
+    h = httplib2.Http()
+    result = h.request(url, 'GET')[1]
+    data = json.loads(result)
+    print data
+
+    login_session['picture'] = data['data']['url']
+
+    # see if user exists, if it doesn't make a new one
+    user_id = getUserID(login_session['email'])
+    if not user_id:
+        user_id = createUser(login_session)
+    login_session['user_id'] = user_id
+
+    output = ''
+    output += '<h1>Welcome, '
+    output += login_session['username']
+    output += '!</h1>'
+    output += '<img src="'
+    output += login_session['picture']
+    output += '" style="width: 300px; height: 300px; border-radius: 150px;'
+    output += '-webkit-border-radius: 150px; -moz-border-radius: 150px;">'
+    flash("You've logged in as %s" % login_session['username'])
+    return output
 
 # Disconnect oauth2
 @app.route('/disconnect')
 def disconnect():
     if 'provider' in login_session:
         if login_session['provider'] == 'google':
-            gdisconnect()
             del login_session['gplus_id']
             del login_session['access_token']
         if login_session['provider'] == 'facebook':
-            fbdisconnect()
             del login_session['facebook_id']
 
         del login_session['username']
