@@ -1,34 +1,38 @@
 # Udacity FSND Catalog App
 
-## How to run it
+## How to Run It
 
 1. Follow the instructions to install virtual environment in vagrant(from Udacity):
 
-[Vagrant VM Installation](https://www.udacity.com/wiki/ud088/vagrant)
+ [Vagrant VM Installation](https://www.udacity.com/wiki/ud088/vagrant)
 
 2. Run Vagrant VM and head to the `/vagrant` path:
 
-`vagrant up`
-`vagrant ssh`
-`cd /vagrant`
+ `vagrant up`
+
+ `vagrant ssh`
+
+ `cd /vagrant`
 
 3. In the local invironment of the same path, wownload this repo:
 
-`cd path/to/vagrant`
-`git clone https://github.com/shisaq/udacity_fsnd_item_catalog`
+ `cd path/to/vagrant`
+
+ `git clone https://github.com/shisaq/udacity_fsnd_item_catalog`
 
 4. In Vagrant VM, go to the repo and initiate the database:
 
-`cd udacity_fsnd_item_catalog`
-`python initial_data.py`
+ `cd udacity_fsnd_item_catalog`
+
+ `python initial_data.py`
 
 5. In Vagrant VM, run the server:
 
-`python application.py`
+ `python application.py`
 
 6. Head to your browser and type the url to open this app:
 
-`localhost:8000`
+ `localhost:8000`
 
 ## Technique Stacks
 
