@@ -32,7 +32,6 @@ a {
 
 /* header section */
 header {
-    background-color: yellow;
     padding: 20px;
     position: relative;
 }
@@ -62,4 +61,18 @@ li {
 
 .items_block {
     width: 70%;
+}
+
+/* ---- particles.js container ---- */
+#particles-js{
+  width: 100%;
+  height: 76px;
+  position: absolute;
+  top: 0;
+  background-color: #724938;
+  background-image: url('');
+  background-size: cover;
+  background-position: 50% 50%;
+  background-repeat: no-repeat;
+  z-index: -1;
 }
