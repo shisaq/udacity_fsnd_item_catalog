@@ -10,11 +10,14 @@
 {% endwith %}
 
 <!-- main content -->
-<ul class="categories">
-{% for c in categories %}
-    <li class="{{ 'highlight basic' if c.name == category.name else 'basic' }}"><a href="{{ url_for('itemsList', category_name = c.name) }}">{{ c.name }}</a></li>
-{% endfor %}
-</ul>
+<div class="category_block">
+    <h2>Categories</h2>
+    <ul class="categories">
+    {% for c in categories %}
+        <li class="{{ 'active' if c.name == category.name }}"><a href="{{ url_for('itemsList', category_name = c.name) }}">{{ c.name }}</a></li>
+    {% endfor %}
+    </ul>
+</div>
 <div class="items_block">
     {% if 'username' in session %}
     <div class="add">

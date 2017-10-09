@@ -10,11 +10,14 @@
 {% endwith %}
 
 <!-- main content -->
-<ul class="categories">
-    {% for category in categories %}
-    <li class="basic"><a href="{{ url_for('itemsList', category_name = category.name) }}">{{ category.name }}</a></li>
-    {% endfor %}
-</ul>
+<div class="category_block">
+    <h2>Categories</h2>
+    <ul class="categories">
+        {% for category in categories %}
+        <li class="basic"><a href="{{ url_for('itemsList', category_name = category.name) }}">{{ category.name }}</a></li>
+        {% endfor %}
+    </ul>
+</div>
 <div class="items_block">
     {% if 'username' in session %}
     <div class="add">
