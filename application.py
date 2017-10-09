@@ -31,13 +31,17 @@ def addItem():
     if request.method == 'POST':
         if request.form['name'] and request.form['description'] and \
         request.form['course']:
-            newItem = Item(name = request.form['name'],\
-                           description = request.form['description'],\
-                           course = request.form['course'])
-            session.add(newItem)
-            session.commit()
-            flash('A new item has been %s added!' % newItem.name)
-            return redirect(url_for('itemsList', category_name = request.form['course']))
+            if checkUnique(request.form['name']):
+                newItem = Item(name = request.form['name'],\
+                               description = request.form['description'],\
+                               course = request.form['course'])
+                session.add(newItem)
+                session.commit()
+                flash('A new item has been %s added!' % newItem.name)
+                return redirect(url_for('itemsList', category_name = request.form['course']))
+            else:
+                flash('Item %s already exists. Please use a different name.' % request.form['name'])
+                return redirect(url_for('homepage'))
         else:
             flash('Please make sure there is no empty value.')
             return redirect(url_for('homepage'))
@@ -51,12 +55,15 @@ def editItem(item_name):
     if request.method == 'POST':
         if request.form['name'] and request.form['description'] and \
         request.form['course']:
-            itemToBeUpdate.name = request.form['name']
-            itemToBeUpdate.description = request.form['description']
-            itemToBeUpdate.course = request.form['course']
-            session.add(itemToBeUpdate)
-            session.commit()
-            flash('Successfully updated the info of %s!' % itemToBeUpdate.name)
+            if checkUnique(request.form['name']):
+                itemToBeUpdate.name = request.form['name']
+                itemToBeUpdate.description = request.form['description']
+                itemToBeUpdate.course = request.form['course']
+                session.add(itemToBeUpdate)
+                session.commit()
+                flash('Successfully updated the info of %s!' % itemToBeUpdate.name)
+            else:
+                flash('Item %s already exists. Please use a different name.' % itemToBeUpdate.name)
         else:
             flash('Please make sure there is no empty value.')
         return redirect(url_for('itemsList', category_name = itemToBeUpdate.course))
@@ -67,7 +74,6 @@ def editItem(item_name):
 @app.route('/catalog/<item_name>/delete', methods=['POST', 'GET'])
 def deleteItem(item_name):
     itemToBeDelete = session.query(Item).filter_by(name = item_name).one()
-    print itemToBeDelete.name
     if request.method == 'POST':
         session.delete(itemToBeDelete)
         session.commit()
@@ -76,6 +82,13 @@ def deleteItem(item_name):
     else:
         return render_template('deleteItem.html', item = itemToBeDelete)
 
+# check if the name is unique
+def checkUnique(name):
+    items = session.query(Item).all()
+    for item in items:
+        if item.name == name:
+            return False
+    return True
 
 if __name__ == '__main__':
     app.secret_key = 'superdevkey'

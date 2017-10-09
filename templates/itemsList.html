@@ -19,7 +19,7 @@
     <div class="add">
         <a href="{{ url_for('addItem') }}">Add Item</a>
     </div>
-    <h2>{{ category.name }}({{ count }} items)</h2>
+    <h2>{{ category.name }}({{ count }} {{ 'item' if count == 0 or count == 1 else 'items' }})</h2>
     <ul class="items">
     {% for item in items %}
         <li><a href="{{ url_for('showItem', category_name = item.course, item_name = item.name) }}">{{ item.name }}</a></li>
