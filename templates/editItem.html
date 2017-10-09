@@ -2,29 +2,24 @@
 
 <h2>Edit {{ item.name }}</h2>
 <form method="post" action="{{ url_for('editItem', item_name = item.name) }}">
-    <p>
-        <h3>Title</h3>
-        <input value="{{ item.name }}" type="text" name="name">
-    </p>
-    <p>
-        <h3>Description</h3>
-        <textarea name="description">{{ item.description }}</textarea>
-    </p>
-    <p>
-        <h3>Category</h3>
-        <select name="course">
-            {% for c in categories %}
-            <option value="{{ c.name }}"
-                {{ 'selected' if c.name == item.course }}
-            >
-            {{ c.name }}</option>
-        {% endfor %}
-        </select>
-    </p>
-    <p>
-        <input type="submit" value="Submit">
-        <a href="{{ url_for('homepage') }}">Cancel</a>
-    </p>
+    <h3>Title</h3>
+    <input class="single_line" type="text" name="name" value="{{ item.name }}">
+    <h3>Description</h3>
+    <textarea name="description">{{ item.description }}</textarea>
+    <h3>Category</h3>
+    <select name="course">
+    {% for c in categories %}
+        <option value="{{ c.name }}"
+            {{ 'selected' if c.name == item.course }}
+        >
+            {{ c.name }}
+        </option>
+    {% endfor %}
+    </select>
+    <div class="buttons">
+        <input class="btn update" type="submit" value="Submit">
+        <a class="btn delete" href="{{ url_for('homepage') }}">Cancel</a>
+    </div>
 </form>
 
 {% include 'footer.html' %}

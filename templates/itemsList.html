@@ -21,8 +21,8 @@
     </div>
     <div class="items_block">
         {% if 'username' in session %}
-        <div class="add">
-            <a href="{{ url_for('addItem') }}">Add Item</a>
+        <div>
+            <a class="btn update" href="{{ url_for('addItem') }}">Add Item</a>
         </div>
         {% endif %}
         <h2>{{ category.name }}({{ count }} {{ 'item' if count == 0 or count == 1 else 'items' }})</h2>

@@ -3,8 +3,10 @@
 <h2>{{ item.name }}</h2>
 <p class="description">{{ item.description }}</p>
 {% if 'username' in session %}
-    <a href="{{ url_for('editItem', item_name = item.name) }}">edit</a>
-    <a href="{{ url_for('deleteItem', item_name = item.name) }}">delete</a>
+    <div class="buttons">
+        <a class="btn update" href="{{ url_for('editItem', item_name = item.name) }}">edit</a>
+        <a class="btn delete" href="{{ url_for('deleteItem', item_name = item.name) }}">delete</a>
+    </div>
 {% endif %}
 
 {% include 'footer.html' %}

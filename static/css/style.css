@@ -42,6 +42,7 @@ a {
     color: #fff;
 }
 
+.btn:hover,
 a:hover {
     color: #BDC193;
 }
@@ -61,13 +62,28 @@ a:hover {
     text-align: center;
 }
 
-.login {
+/* button layout */
+.btn {
+    display: block;
+    width: 100px;
+    padding: 8px;
+    text-align: center;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    margin-right: 20px;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+}
+
+.update {
     background-color: #1B813E;
 }
 
-.logout {
+.delete {
     background-color: #8E354A;
 }
+
 /* main section */
 .container {
     padding: 20px;
@@ -76,6 +92,7 @@ a:hover {
 .message {
     padding-bottom: 20px;
     color: #F596AA;
+    background-color: #0F2540;
     font-weight: bold;
 }
 
@@ -112,16 +129,6 @@ li {
     background-color: #1B813E;
 }
 
-.add {
-    display: block;
-    width: 100px;
-    padding: 8px;
-    text-align: center;
-    background-color: #1B813E;
-    border-radius: 10px;
-    margin-bottom: 20px;
-}
-
 /* login page */
 .login_buttons {
     display: flex;
@@ -138,6 +145,31 @@ li {
     border-radius: 75px;
     -webkit-border-radius: 75px;
     -moz-border-radius: 75px;
+}
+
+/* item info page */
+p {
+    margin-bottom: 20px;
+    background-color: #CA7A2C;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.buttons {
+    display: flex;
+}
+
+/* add item page */
+h3 {
+    margin-bottom: 15px;
+}
+
+.single_line,
+textarea,
+select {
+    margin-bottom: 15px;
+    background-color: #BDC193;
+    color: #0F2540;
 }
 
 /* ---- particles.js container ---- */

@@ -3,8 +3,10 @@
 <h2>Delete Item</h2>
 <p>Are you sure you want to delete {{ item.name }}?</p>
 <form method="post" action="{{ url_for('deleteItem', item_name = item.name) }}">
-    <input type="submit" value="Delete">
-    <a href="{{ url_for('itemsList', category_name = item.course ) }}">Cancel</a>
+    <div class="buttons">
+        <input class="btn update" type="submit" value="Delete">
+        <a class="btn delete" href="{{ url_for('itemsList', category_name = item.course ) }}">Cancel</a>
+    </div>
 </form>
 
 {% include 'footer.html' %}
