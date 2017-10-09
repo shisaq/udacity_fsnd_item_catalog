@@ -122,6 +122,24 @@ li {
     margin-bottom: 20px;
 }
 
+/* login page */
+.login_buttons {
+    display: flex;
+    justify-content: center;
+}
+
+#result {
+    text-align: center;
+}
+
+.avatar {
+    width: 150px;
+    height: 150px;
+    border-radius: 75px;
+    -webkit-border-radius: 75px;
+    -moz-border-radius: 75px;
+}
+
 /* ---- particles.js container ---- */
 #particles-js{
     width: 100%;

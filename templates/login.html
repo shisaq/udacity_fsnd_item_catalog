@@ -1,5 +1,5 @@
 {% include 'header.html' %}
-
+<section class="login_buttons">
 <!-- GOOGLE PLUS SIGN IN-->
 <div id="signInButton">
   <span class="g-signin"
@@ -28,7 +28,7 @@ function signInCallback(authResult) {
       success: function(result) {
         // Handle or verify the server response if necessary.
         if (result) {
-          $('#result').html('Login Successful!</br>'+ result + '</br>Redirecting...')
+          $('#result').html('Login Successful!</br></br>'+ result + '</br></br>Redirecting...')
          setTimeout(function() {
           window.location.href = "/";
          }, 4000);
@@ -79,7 +79,7 @@ function signInCallback(authResult) {
       success: function(result) {
         // Handle or verify the server response if necessary.
         if (result) {
-          $('#result').html('Login Successful!</br>'+ result + '</br>Redirecting...')
+          $('#result').html('Login Successful!</br></br>'+ result + '</br></br>Redirecting...')
          setTimeout(function() {
           window.location.href = "/";
          }, 4000);
@@ -93,10 +93,11 @@ function signInCallback(authResult) {
   }
 </script>
 
-<fb:login-button scope="public_profile,email" onlogin="sendTokenToServer();">
+<fb:login-button scope="public_profile,email" onlogin="sendTokenToServer();" id="fb_login_button">
   <a href='javascript:sendTokenToServer()'>Login with Facebook</a>
 </fb:login-button>
 <!--END FACEBOOK SIGN IN -->
+</section>
 <div id="result"></div>
 
 {% include 'footer.html' %}

@@ -108,14 +108,12 @@ def gconnect():
     login_session['user_id'] = user_id
 
     output = ''
-    output += '<h1>Welcome, '
+    output += '<h2>Welcome, '
     output += login_session['username']
-    output += '!</h1>'
-    output += '<img src="'
+    output += '!</h2>'
+    output += '<img class="avatar" src="'
     output += login_session['picture']
-    output += '" style="width: 300px; height: 300px;'
-    output += 'border-radius: 150px; -webkit-border-radius: 150px;'
-    output += '-moz-border-radius: 150px;">'
+    output += '">'
     flash("You've logged in as %s" % login_session['username'])
     return output
 
@@ -166,13 +164,12 @@ def fbconnect():
     login_session['user_id'] = user_id
 
     output = ''
-    output += '<h1>Welcome, '
+    output += '<h2>Welcome, '
     output += login_session['username']
-    output += '!</h1>'
-    output += '<img src="'
+    output += '!</h2>'
+    output += '<img class="avatar" src="'
     output += login_session['picture']
-    output += '" style="width: 300px; height: 300px; border-radius: 150px;'
-    output += '-webkit-border-radius: 150px; -moz-border-radius: 150px;">'
+    output += '">'
     flash("You've logged in as %s" % login_session['username'])
     return output
 
