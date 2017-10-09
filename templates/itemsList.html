@@ -10,26 +10,28 @@
 {% endwith %}
 
 <!-- main content -->
-<div class="category_block">
-    <h2>Categories</h2>
-    <ul class="categories">
-    {% for c in categories %}
-        <li class="{{ 'active' if c.name == category.name }}"><a href="{{ url_for('itemsList', category_name = c.name) }}">{{ c.name }}</a></li>
-    {% endfor %}
-    </ul>
-</div>
-<div class="items_block">
-    {% if 'username' in session %}
-    <div class="add">
-        <a href="{{ url_for('addItem') }}">Add Item</a>
+<div class="info">
+    <div class="category_block">
+        <h2>Categories</h2>
+        <ul class="categories">
+        {% for c in categories %}
+            <li><a class="{{ 'item_link active' if c.name == category.name else 'item_link' }}" href="{{ url_for('itemsList', category_name = c.name) }}">{{ c.name }}</a></li>
+        {% endfor %}
+        </ul>
     </div>
-    {% endif %}
-    <h2>{{ category.name }}({{ count }} {{ 'item' if count == 0 or count == 1 else 'items' }})</h2>
-    <ul class="items">
-    {% for item in items %}
-        <li><a href="{{ url_for('showItem', category_name = item.course, item_name = item.name) }}">{{ item.name }}</a></li>
-    {% endfor %}
-    </ul>
+    <div class="items_block">
+        {% if 'username' in session %}
+        <div class="add">
+            <a href="{{ url_for('addItem') }}">Add Item</a>
+        </div>
+        {% endif %}
+        <h2>{{ category.name }}({{ count }} {{ 'item' if count == 0 or count == 1 else 'items' }})</h2>
+        <ul class="items">
+        {% for item in items %}
+            <li><a class="item_link" href="{{ url_for('showItem', category_name = item.course, item_name = item.name) }}">{{ item.name }}</a></li>
+        {% endfor %}
+        </ul>
+    </div>
 </div>
 
 {% include 'footer.html' %}

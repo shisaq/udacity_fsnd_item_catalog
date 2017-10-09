@@ -281,16 +281,26 @@ def editItem(item_name):
     if request.method == 'POST':
         if request.form['name'] and request.form['description'] and \
         request.form['course']:
-            if checkUnique(request.form['name']):
-                itemToBeUpdate.name = request.form['name']
+            # user has updated the name, we need check if it's unique
+            if item_name != request.form['name']:
+                if checkUnique(request.form['name']):
+                    itemToBeUpdate.name = request.form['name']
+                    itemToBeUpdate.description = request.form['description']
+                    itemToBeUpdate.course = request.form['course']
+                    session.add(itemToBeUpdate)
+                    session.commit()
+                    flash('Successfully updated the info of %s!' \
+                        % itemToBeUpdate.name)
+                else:
+                    flash('Failed to update. Please use a different name.')
+            # user doesn't change the name, it's ok to continue
+            else:
                 itemToBeUpdate.description = request.form['description']
                 itemToBeUpdate.course = request.form['course']
                 session.add(itemToBeUpdate)
                 session.commit()
                 flash('Successfully updated the info of %s!' \
                     % itemToBeUpdate.name)
-            else:
-                flash('Failed to update. Please use a different name.')
         else:
             flash('Please make sure there is no empty value.')
         return redirect(url_for('itemsList', \

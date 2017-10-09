@@ -4,6 +4,8 @@ html {
     -moz-box-sizing: border-box;
     box-sizing: border-box;
     font-family: 'Slabo 27px', serif;
+    background-color: #0F2540;
+    color: #fff;
 }
 *, *:before, *:after {
     -webkit-box-sizing: inherit;
@@ -36,31 +38,88 @@ header {
     position: relative;
 }
 
-.login {
+a {
+    color: #fff;
+}
+
+a:hover {
+    color: #BDC193;
+}
+
+.index_title:hover {
+    color: #BDC193;
+}
+
+.login_block {
+    width: 100px;
     position: absolute;
     right: 20px;
     top: 20px;
     bottom: 20px;
-    background-color: green;
+    border-radius: 10px;
+    padding: 8px;
+    text-align: center;
 }
 
+.login {
+    background-color: #1B813E;
+}
+
+.logout {
+    background-color: #8E354A;
+}
 /* main section */
 .container {
-    background-color: salmon;
     padding: 20px;
+}
+
+.message {
+    padding-bottom: 20px;
+    color: #F596AA;
+    font-weight: bold;
+}
+
+.info {
     display: flex;
+}
+
+.category_block {
+    margin-right: 20px;
+    width: 30%;
+}
+
+.items_block {
+    width: 70%;
+}
+
+h2 {
+    margin-bottom: 20px;
 }
 
 li {
     list-style-type: none;
 }
 
-.category_block {
-    width: 30%;
+.item_link {
+    display: block;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 10px;
+    background-color: #CA7A2C;
 }
 
-.items_block {
-    width: 70%;
+.active {
+    background-color: #1B813E;
+}
+
+.add {
+    display: block;
+    width: 100px;
+    padding: 8px;
+    text-align: center;
+    background-color: #1B813E;
+    border-radius: 10px;
+    margin-bottom: 20px;
 }
 
 /* ---- particles.js container ---- */
@@ -69,7 +128,6 @@ li {
     height: 76px;
     position: absolute;
     top: 0;
-    background-color: #724938;
     background-image: url('');
     background-size: cover;
     background-position: 50% 50%;
@@ -81,9 +139,9 @@ li {
 .welcome {
     padding: 20px;
     font-size: 1.5em;
-    color: #fff;
-    background-color: #373C38;
+    color: #BDC193;
+    background-color: #1B813E;
 }
 .intro {
-    border-bottom: 2px solid salmon;
+    border-bottom: 2px solid #F596AA;
 }

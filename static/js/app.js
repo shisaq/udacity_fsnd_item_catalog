@@ -3,7 +3,8 @@ import Typed from 'typed.js';
 
 // load particles.js
 // https://github.com/VincentGarreau/particles.js/
-window.particlesJS.load('particles-js', 'static/js/particles.config.json')
+var source = document.location.origin + '/static/js/particles.config.json'
+window.particlesJS.load('particles-js', source)
 
 // load typed.js
 // https://github.com/mattboldt/typed.js/
