@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, url_for, redirect, flash
+from flask import Flask, render_template, request, url_for, redirect, flash, jsonify
 app = Flask(__name__)
 
 from database_orm import session, desc
@@ -63,7 +63,7 @@ def editItem(item_name):
                 session.commit()
                 flash('Successfully updated the info of %s!' % itemToBeUpdate.name)
             else:
-                flash('Item %s already exists. Please use a different name.' % itemToBeUpdate.name)
+                flash('Failed to update. Please use a different name.')
         else:
             flash('Please make sure there is no empty value.')
         return redirect(url_for('itemsList', category_name = itemToBeUpdate.course))
@@ -81,6 +81,25 @@ def deleteItem(item_name):
         return redirect(url_for('itemsList', category_name = itemToBeDelete.course))
     else:
         return render_template('deleteItem.html', item = itemToBeDelete)
+
+# APIs
+# show all categories
+@app.route('/catalog/categories/JSON')
+def allCategoriesJSON():
+    categories = session.query(Category).all()
+    return jsonify(Categories=[i.serialize for i in categories])
+
+# show all items in a specific category
+@app.route('/catalog/<category_name>/JSON')
+def itemsListJSON(category_name):
+    items = session.query(Item).filter_by(course = category_name).all()
+    return jsonify(Items=[i.serialize for i in items])
+
+# show datails of an item
+@app.route('/catalog/<item_name>/JSON')
+def itemInfoJSON(item_name):
+    item = session.query(Item).filter_by(name = item_name).one()
+    return jsonify(Item=[i.serialize for i in item])
 
 # check if the name is unique
 def checkUnique(name):
