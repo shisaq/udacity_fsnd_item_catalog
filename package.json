@@ -25,6 +25,7 @@
     "babel-core": "^6.26.0",
     "babel-loader": "^7.1.2",
     "babel-preset-env": "^1.6.0",
+    "particles.js": "^2.0.0",
     "typed.js": "^2.0.6",
     "webpack": "^3.6.0"
   }
