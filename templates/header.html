@@ -6,6 +6,10 @@
 <body>
     <header>
         <h1><a href="{{ url_for('homepage') }}">Catalog App</a></h1>
-        <button>Log in</button>
+        {% if 'username' not in session %}
+        <a href="{{ url_for('showLogin') }}">Log in</a>
+        {% else %}
+        <a href="{{ url_for('disconnect') }}">Disconnect</a>
+        {% endif %}
     </header>
     <section class="container">

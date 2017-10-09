@@ -16,9 +16,11 @@
     {% endfor %}
 </ul>
 <div class="items_block">
+    {% if 'username' in session %}
     <div class="add">
         <a href="{{ url_for('addItem') }}">Add Item</a>
     </div>
+    {% endif %}
     <h2>Latest Items</h2>
     <ul class="items">
         {% for item in items %}
