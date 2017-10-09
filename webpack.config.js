@@ -1,10 +1,11 @@
 var debug = process.env.NODE_ENV !== "production";
 var webpack = require('webpack');
 var path = require('path');
+var MinifyPlugin = require("babel-minify-webpack-plugin");
 
 module.exports = {
   context: path.join(__dirname, "static"),
-  devtool: debug ? "inline-sourcemap" : null,
+  devtool: debug ? "inline-sourcemap" : false,
   entry: "./js/app.js",
   module: {
     loaders: [
@@ -23,8 +24,6 @@ module.exports = {
     filename: "app.min.js"
   },
   plugins: debug ? [] : [
-    new webpack.optimize.DedupePlugin(),
-    new webpack.optimize.OccurenceOrderPlugin(),
-    new webpack.optimize.UglifyJsPlugin({ mangle: false, sourcemap: false }),
-  ]
+    new MinifyPlugin(),
+  ],
 };
