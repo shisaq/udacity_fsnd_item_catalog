@@ -1,14 +1,14 @@
 /* noamalize further */
 html {
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
-  font-family: 'Slabo 27px', serif;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    font-family: 'Slabo 27px', serif;
 }
 *, *:before, *:after {
-  -webkit-box-sizing: inherit;
-  -moz-box-sizing: inherit;
-  box-sizing: inherit;
+    -webkit-box-sizing: inherit;
+    -moz-box-sizing: inherit;
+    box-sizing: inherit;
 }
 
 body,
@@ -65,14 +65,25 @@ li {
 
 /* ---- particles.js container ---- */
 #particles-js{
-  width: 100%;
-  height: 76px;
-  position: absolute;
-  top: 0;
-  background-color: #724938;
-  background-image: url('');
-  background-size: cover;
-  background-position: 50% 50%;
-  background-repeat: no-repeat;
-  z-index: -1;
+    width: 100%;
+    height: 76px;
+    position: absolute;
+    top: 0;
+    background-color: #724938;
+    background-image: url('');
+    background-size: cover;
+    background-position: 50% 50%;
+    background-repeat: no-repeat;
+    z-index: -1;
+}
+
+/* typed js customization */
+.welcome {
+    padding: 20px;
+    font-size: 1.5em;
+    color: #fff;
+    background-color: #373C38;
+}
+.intro {
+    border-bottom: 2px solid salmon;
 }
