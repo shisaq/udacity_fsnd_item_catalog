@@ -12,7 +12,10 @@ DBSession = sessionmaker(bind=engine)
 session = DBSession()
 
 # define the basic categories list
-categories = ["Soccer", "Basketball", "Baseball", "Frisbee", "Snowboarding", "Rock Climbing", "Foosball", "Skating", "Hockey"]
+categories = [
+    "Soccer", "Basketball", "Baseball", "Frisbee", "Snowboarding",
+    "Rock Climbing", "Foosball", "Skating", "Hockey"]
+
 
 # install every input to the database
 def installData(c):
