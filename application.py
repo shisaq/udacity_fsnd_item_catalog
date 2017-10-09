@@ -147,6 +147,27 @@ def disconnect():
         flash('You were not logged in.')
     return redirect(url_for('homepage'))
 
+# APIs
+# show all categories
+@app.route('/catalog/categories/JSON')
+def allCategoriesJSON():
+    categories = session.query(Category).all()
+    return jsonify(Categories=[i.serialize for i in categories])
+
+# show all items in a specific category
+@app.route('/catalog/<category_name>/JSON')
+def itemsListJSON(category_name):
+    items = session.query(Item).filter_by(course = category_name).all()
+    return jsonify(Items=[i.serialize for i in items])
+
+# show datails of an item
+@app.route('/catalog/<item_name>/JSON')
+def itemInfoJSON(item_name):
+    item = session.query(Item).filter_by(name = item_name).one()
+    return jsonify(Item=[i.serialize for i in item])
+
+
+# homepage
 @app.route('/')
 @app.route('/catalog')
 def homepage():
@@ -156,6 +177,7 @@ def homepage():
     return render_template('homepage.html', \
         categories = categories, items = items)
 
+# category page
 @app.route('/catalog/<category_name>/items')
 def itemsList(category_name):
     categories = session.query(Category).all()
@@ -169,11 +191,13 @@ def itemsList(category_name):
         items = items, \
         count = count)
 
+# item page
 @app.route('/catalog/<category_name>/<item_name>')
 def showItem(category_name, item_name):
     item = session.query(Item).filter_by(name = item_name).one()
     return render_template('itemInfo.html', item = item)
 
+# add an item
 @app.route('/catalog/add', methods=['POST', 'GET'])
 def addItem():
     checkLogInStatus()
@@ -200,6 +224,7 @@ def addItem():
         categories = session.query(Category).all()
         return render_template('addItem.html', categories = categories)
 
+# update an item
 @app.route('/catalog/<item_name>/edit', methods=['POST', 'GET'])
 def editItem(item_name):
     checkLogInStatus()
@@ -226,6 +251,7 @@ def editItem(item_name):
         return render_template('editItem.html', \
             categories = categories, item = itemToBeUpdate)
 
+# delete an item
 @app.route('/catalog/<item_name>/delete', methods=['POST', 'GET'])
 def deleteItem(item_name):
     checkLogInStatus()
@@ -239,25 +265,8 @@ def deleteItem(item_name):
     else:
         return render_template('deleteItem.html', item = itemToBeDelete)
 
-# APIs
-# show all categories
-@app.route('/catalog/categories/JSON')
-def allCategoriesJSON():
-    categories = session.query(Category).all()
-    return jsonify(Categories=[i.serialize for i in categories])
 
-# show all items in a specific category
-@app.route('/catalog/<category_name>/JSON')
-def itemsListJSON(category_name):
-    items = session.query(Item).filter_by(course = category_name).all()
-    return jsonify(Items=[i.serialize for i in items])
-
-# show datails of an item
-@app.route('/catalog/<item_name>/JSON')
-def itemInfoJSON(item_name):
-    item = session.query(Item).filter_by(name = item_name).one()
-    return jsonify(Item=[i.serialize for i in item])
-
+# some assistants to simplify the code
 # check if the name is unique
 def checkUnique(name):
     items = session.query(Item).all()
