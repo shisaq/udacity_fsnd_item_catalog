@@ -1,0 +1,78 @@
+/* noamalize further */
+html {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  font-family: 'Slabo 27px', serif;
+}
+*, *:before, *:after {
+  -webkit-box-sizing: inherit;
+  -moz-box-sizing: inherit;
+  box-sizing: inherit;
+}
+
+body,
+div,
+section,
+header,
+footer,
+h1,
+h2,
+h3,
+p,
+ul,
+li {
+    padding: 0;
+    margin: 0;
+}
+
+a {
+    text-decoration: none;
+}
+
+/* header section */
+header {
+    padding: 20px;
+    position: relative;
+}
+
+.login {
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    bottom: 20px;
+    background-color: green;
+}
+
+/* main section */
+.container {
+    background-color: salmon;
+    padding: 20px;
+    display: flex;
+}
+
+li {
+    list-style-type: none;
+}
+
+.category_block {
+    width: 30%;
+}
+
+.items_block {
+    width: 70%;
+}
+
+/* ---- particles.js container ---- */
+#particles-js{
+  width: 100%;
+  height: 76px;
+  position: absolute;
+  top: 0;
+  background-color: #724938;
+  background-image: url('');
+  background-size: cover;
+  background-position: 50% 50%;
+  background-repeat: no-repeat;
+  z-index: -1;
+}
