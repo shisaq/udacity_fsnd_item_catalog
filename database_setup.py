@@ -14,14 +14,20 @@ class User(Base):
     email = Column(String(250), nullable=False)
     picture = Column(String(250))
 
+    @property
+    def serialize(self):
+        return {
+            'name': self.name,
+            'id': self.id,
+            'email': self.email
+        }
+
 
 class Category(Base):
     __tablename__ = 'category'
 
     name = Column(String, nullable=False)
     id = Column(Integer, primary_key=True)
-    user_id = Column(Integer, ForeignKey('user.id'))
-    user = relationship(User)
 
     @property
     def serialize(self):
@@ -39,7 +45,7 @@ class Item(Base):
     description = Column(String(1000))
     course = Column(String, ForeignKey('category.name'))
     category = relationship(Category)
-    user_id = Column(Integer, ForeignKey('user.id'))
+    email = Column(String, ForeignKey('user.email'))
     user = relationship(User)
 
     @property
@@ -48,7 +54,8 @@ class Item(Base):
             'name': self.name,
             'description': self.description,
             'id': self.id,
-            'course': self.course
+            'course': self.course,
+            'email': self.email
         }
 
 

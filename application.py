@@ -1,8 +1,13 @@
-from flask import Flask, render_template, request, url_for, redirect,\
- flash, jsonify
+from flask import (Flask,
+                   render_template,
+                   request,
+                   url_for,
+                   redirect,
+                   flash,
+                   jsonify)
 
 # database
-from database_orm import session, desc
+from database_orm import session, desc, exc
 from database_setup import Category, Item, User
 
 # login session
@@ -217,17 +222,16 @@ def allCategoriesJSON():
 
 
 # show all items in a specific category
-@app.route('/catalog/<category_name>/JSON')
+@app.route('/catalog/<path:category_name>/items/JSON')
 def itemsListJSON(category_name):
     items = session.query(Item).filter_by(course=category_name).all()
     return jsonify(Items=[i.serialize for i in items])
 
 
-# show datails of an item
-@app.route('/catalog/<item_name>/JSON')
-def itemInfoJSON(item_name):
-    item = session.query(Item).filter_by(name=item_name).one()
-    return jsonify(Item=[i.serialize for i in item])
+@app.route('/catalog/users/JSON')
+def userList():
+    users = session.query(User).all()
+    return jsonify(Users=[i.serialize for i in users])
 
 
 # homepage
@@ -244,7 +248,7 @@ def homepage():
 
 
 # category page
-@app.route('/catalog/<category_name>/items')
+@app.route('/catalog/<path:category_name>/items')
 def itemsList(category_name):
     categories = session.query(Category).all()
     category = session.query(Category).filter_by(name=category_name).one()
@@ -259,7 +263,7 @@ def itemsList(category_name):
 
 
 # item page
-@app.route('/catalog/<category_name>/<item_name>')
+@app.route('/catalog/<path:category_name>/<path:item_name>/info')
 def showItem(category_name, item_name):
     item = session.query(Item).filter_by(name=item_name).one()
     return render_template('itemInfo.html', item=item)
@@ -268,14 +272,16 @@ def showItem(category_name, item_name):
 # add an item
 @app.route('/catalog/add', methods=['POST', 'GET'])
 def addItem():
-    checkLogInStatus()
+    if 'username' not in login_session:
+        return redirect(url_for('showLogin'))
     if request.method == 'POST':
         if request.form['name'] and request.form['description'] and \
            request.form['course']:
             if checkUnique(request.form['name']):
                 newItem = Item(name=request.form['name'],
                                description=request.form['description'],
-                               course=request.form['course'])
+                               course=request.form['course'],
+                               email=login_session['email'])
                 session.add(newItem)
                 session.commit()
                 flash('A new item has been %s added!' % newItem.name)
@@ -295,10 +301,19 @@ def addItem():
 
 
 # update an item
-@app.route('/catalog/<item_name>/edit', methods=['POST', 'GET'])
+@app.route('/catalog/<path:item_name>/edit', methods=['POST', 'GET'])
 def editItem(item_name):
-    checkLogInStatus()
-    itemToBeUpdate = session.query(Item).filter_by(name=item_name).one()
+    if 'username' not in login_session:
+        return redirect(url_for('showLogin'))
+    # if there's no such an item in database, head to 404 page
+    try:
+        itemToBeUpdate = session.query(Item).filter_by(name=item_name).one()
+    except exc.NoResultFound:
+        return render_template('404.html'), 404
+    # this item is not created by this user
+    if itemToBeUpdate.email != login_session['email']:
+        flash('Non authorized.')
+        return redirect(url_for('homepage'))
     if request.method == 'POST':
         if request.form['name'] and request.form['description'] and \
            request.form['course']:
@@ -334,11 +349,21 @@ def editItem(item_name):
 
 
 # delete an item
-@app.route('/catalog/<item_name>/delete', methods=['POST', 'GET'])
+@app.route('/catalog/<path:item_name>/delete', methods=['POST', 'GET'])
 def deleteItem(item_name):
-    checkLogInStatus()
-    itemToBeDelete = session.query(Item).filter_by(name=item_name).one()
+    if 'username' not in login_session:
+        return redirect(url_for('showLogin'))
+    # if there's no such an item in database, head to 404 page
+    try:
+        itemToBeDelete = session.query(Item).filter_by(name=item_name).one()
+    except exc.NoResultFound:
+        return render_template('404.html'), 404
+    # this item is not created by this user
+    if itemToBeDelete.email != login_session['email']:
+        flash('Non authorized.')
+        return redirect(url_for('homepage'))
     if request.method == 'POST':
+        # delete item
         session.delete(itemToBeDelete)
         session.commit()
         flash('Item %s deleted.' % itemToBeDelete.name)
@@ -348,7 +373,7 @@ def deleteItem(item_name):
         return render_template('deleteItem.html', item=itemToBeDelete)
 
 
-# some assistants to simplify the code
+# some helpers to simplify the code
 # check if the name is unique
 def checkUnique(name):
     items = session.query(Item).all()
@@ -379,10 +404,11 @@ def getUserID(email):
         return None
 
 
-# check if a user has logged in
-def checkLogInStatus():
-    if 'username' not in login_session:
-        return redirect(url_for('showLogin'))
+# 404 page
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template('404.html'), 404
+
 
 if __name__ == '__main__':
     app.secret_key = 'superdevkey'

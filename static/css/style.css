@@ -129,6 +129,10 @@ li {
     background-color: #1B813E;
 }
 
+.by_you {
+    color: #1B813E;
+}
+
 /* login page */
 .login_buttons {
     display: flex;

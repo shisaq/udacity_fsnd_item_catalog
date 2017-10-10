@@ -28,7 +28,13 @@
         <h2>{{ category.name }}({{ count }} {{ 'item' if count == 0 or count == 1 else 'items' }})</h2>
         <ul class="items">
         {% for item in items %}
-            <li><a class="item_link" href="{{ url_for('showItem', category_name = item.course, item_name = item.name) }}">{{ item.name }}</a></li>
+            <li>
+                <a class="item_link" href="{{ url_for('showItem', category_name = item.course, item_name = item.name) }}">{{ item.name }}
+                {% if item.email == session['email'] %}
+                    <span class="by_you">(by you)</span>
+                {% endif %}
+                </a>
+            </li>
         {% endfor %}
         </ul>
     </div>
